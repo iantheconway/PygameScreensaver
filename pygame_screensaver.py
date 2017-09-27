@@ -7,40 +7,6 @@ import numpy as np
 # Initialize the game engine
 pygame.init()
 
-# Define the colors we will use in RGB format
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-
-# Set the height and width of the screen
-size = [2000, 1500]
-screen = pygame.display.set_mode(size)
-
-pygame.display.set_caption("Example code for the draw module")
-
-# Loop until the user clicks the close button.
-done = False
-clock = pygame.time.Clock()
-
-x_pos = 200
-y_pos = 200
-
-x_stop = 500
-y_stop = 500
-
-num_recs = 10
-
-a = 1
-b = 1
-
-t = 0
-count = 0
-up = True
-
-tilt_increase = True
-
 
 class MyRect:
     def __init__(self, points):
@@ -54,24 +20,6 @@ class MyRect:
     #     for x in points:
     #         tup = ((x[0, 0], x[0, 1]))
     #         self.points.append(tup)
-
-    def unit_vector(self, vector):
-        """ Returns the unit vector of the vector.  """
-        return vector / np.linalg.norm(vector)
-
-    def angle_between(self, v1, v2):
-        """ Returns the angle in radians between vectors 'v1' and 'v2'::
-
-                >>> angle_between((1, 0, 0), (0, 1, 0))
-                1.5707963267948966
-                >>> angle_between((1, 0, 0), (1, 0, 0))
-                0.0
-                >>> angle_between((1, 0, 0), (-1, 0, 0))
-                3.141592653589793
-        """
-        v1_u = self.unit_vector(v1)
-        v2_u = self.unit_vector(v2)
-        return np.arccos(np.clip(np.dot(v1_u, v2_u), -1.0, 1.0))
 
     def rotate(self, angle):
         # print "angle {}".format(angle)
@@ -109,87 +57,126 @@ class MyRect:
         points.append(self.points[0])
         return points
 
+class ScreenSaver():
+    def __init__(self):
+        # Define the colors we will use in RGB format
+        self.BLACK = (0, 0, 0)
+        self.WHITE = (255, 255, 255)
+        self.BLUE = (0, 0, 255)
+        self.GREEN = (0, 255, 0)
+        self.RED = (255, 0, 0)
 
-while not done:
-    count += .01
-    count = count % 100
+        # Set the height and width of the screen
+        self.size = [2000, 1500]
+        self.screen = pygame.display.set_mode(self.size)
 
-    # This limits the while loop to a max of 10 times per second.
-    # Leave this out and we will use all CPU we can.
-    # clock.tick(100)
+        pygame.display.set_caption("Example code for the draw module")
 
-    for event in pygame.event.get():  # User did something
-        if event.type == pygame.QUIT:  # If user clicked close
-            done = True  # Flag that we are done so we exit this loop
+        # Loop until the user clicks the close button.
+        self.done = False
+        self.clock = pygame.time.Clock()
 
-    # All drawing code happens after the for loop and but
-    # inside the main while done==False loop.
+        self.x_pos = 200
+        self.y_pos = 200
 
-    # Clear the screen and set the screen background
-    screen.fill(WHITE)
+        self.x_stop = 500
+        self.y_stop = 500
 
-    t += 1
-    if t == 10:
-        t = 0
+        self.num_recs = 10
 
-    if x_pos < x_stop and up:
-        x_pos += 1
-    else:
-        up = False
-        x_pos -= 1
-        if x_pos == 0:
-            up = True
+        self.a = 1
+        self.b = 1
 
-    if y_pos < y_stop and up:
-        y_pos += 1
-    else:
-        up = False
-        y_pos -= 1
-        if y_pos == 0:
-            up = True
+        self.t = 0
+        self.count = 0
+        self.up = True
 
-    if t % 2 == 0:
-        if a < 50 and tilt_increase:
-            a += 1
-        else:
-            tilt_increase
-            a -= 1
-            if a == 0:
-                tilt_increase = True
+        self.tilt_increase = True
 
-        if b < 50 and tilt_increase:
-            b += 1
-        else:
-            tilt_increase = False
-            b -= 1
-            if b == 0:
-                tilt_increase = True
+    def run(self):
 
-    # print a, b, x_pos, y_pos, up
+        while not self.done:
+            self.count += .01
+            self.count = self.count % 100
+
+            # This limits the while loop to a max of 10 times per second.
+            # Leave this out and we will use all CPU we can.
+            # clock.tick(100)
+
+            for event in pygame.event.get():  # User did something
+                if event.type == pygame.QUIT:  # If user clicked close
+                    self.done = True  # Flag that we are done so we exit this loop
+
+            # All drawing code happens after the for loop and but
+            # inside the main while done==False loop.
+
+            # Clear the screen and set the screen background
+            self.screen.fill(self.WHITE)
+
+            self.t += 1
+            if self.t == 10:
+                self.t = 0
+
+            if self.x_pos < self.x_stop and self.up:
+                self.x_pos += 1
+            else:
+                self.up = False
+                self.x_pos -= 1
+                if self.x_pos == 0:
+                    self.up = True
+
+            if self.y_pos < self.y_stop and self.up:
+                self.y_pos += 1
+            else:
+                self.up = False
+                self.y_pos -= 1
+                if self.y_pos == 0:
+                    self.up = True
+
+            if self.t % 2 == 0:
+                if self.a < 50 and self.tilt_increase:
+                    self.a += 1
+                else:
+                    self.tilt_increase
+                    self.a -= 1
+                    if self.a == 0:
+                        self.tilt_increase = True
+
+                if self.b < 50 and self.tilt_increase:
+                    self.b += 1
+                else:
+                    self.tilt_increase = False
+                    self.b -= 1
+                    if self.b == 0:
+                        self.tilt_increase = True
+
+            # print a, b, x_pos, y_pos, up
 
 
-    # Draw a rectangle outline
-    for i in range(num_recs):
-        i = num_recs - i
-        rect = MyRect([((i * a / 5.) + x_pos, (i * b / 5.) + y_pos),
-                       ((i * a / 5.) + x_pos, (i * b / 5.) + y_pos + i * 10),
-                       ((i * a / 5.) + x_pos + i * 10, (i * b / 5.) + y_pos + i * 10),
-                       ((i * a / 5.) + x_pos + i * 10, (i * b / 5.) + y_pos)
-                       ])
+            # Draw a rectangle outline
+            for i in range(self.num_recs):
+                i = self.num_recs - i
+                rect = MyRect([((i * self.a / 5.) + self.x_pos, (i * self.b / 5.) + self.y_pos),
+                               ((i * self.a / 5.) + self.x_pos, (i * self.b / 5.) + self.y_pos + i * 10),
+                               ((i * self.a / 5.) + self.x_pos + i * 10, (i * self.b / 5.) + self.y_pos + i * 10),
+                               ((i * self.a / 5.) + self.x_pos + i * 10, (i * self.b / 5.) + self.y_pos)
+                               ])
 
-        # rotate rectangle
-        # angle = ((np.sin(count * i * .1) + 1) / 2) * 360
-        # if angle > 270 and up:
-        #     angle = 0
-        # rect.rotate(angle)
-        points = rect.get_points()
-        # pygame.draw.rect(screen, BLACK, [(i * a / 5.) + x_pos,(i * b / 5.) + y_pos, i * 10, i * 10], 2)
-        pygame.draw.lines(screen, BLACK, False, points, 2)
-    # pygame.draw.lines(screen, BLACK, False, [(10, 10), (10, 110), (110, 110), (110, 10), (10, 10)], 2)
-    # Go ahead and update the screen with what we've drawn.
-    # This MUST happen after all the other drawing commands.
+                # rotate rectangle
+                # angle = ((np.sin(count * i * .1) + 1) / 2) * 360
+                # if angle > 270 and up:
+                #     angle = 0
+                # rect.rotate(angle)
+                points = rect.get_points()
+                # pygame.draw.rect(screen, BLACK, [(i * a / 5.) + x_pos,(i * b / 5.) + y_pos, i * 10, i * 10], 2)
+                pygame.draw.lines(self.screen, self.BLACK, False, points, 2)
+            # pygame.draw.lines(screen, BLACK, False, [(10, 10), (10, 110), (110, 110), (110, 10), (10, 10)], 2)
+            # Go ahead and update the screen with what we've drawn.
+            # This MUST happen after all the other drawing commands.
 
-    pygame.display.flip()
-
-# Be IDLE friendly
-pygame.quit()
+            pygame.display.flip()
+if __name__ == "__main__":
+    ss = ScreenSaver()
+    ss.run()
+    # Be IDLE friendly
+    pygame.quit()
