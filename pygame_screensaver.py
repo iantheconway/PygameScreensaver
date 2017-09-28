@@ -1,6 +1,4 @@
-# Import a library of functions called 'pygame'
 import pygame
-from math import pi
 import math
 import numpy as np
 
@@ -11,15 +9,6 @@ pygame.init()
 class MyRect:
     def __init__(self, points):
         self.points = points
-
-    # def rotate(self, angle):
-    #     pass
-    #     rot_mat = np.matrix([[math.cos(angle), np.sin(angle)], [- math.sin(angle), np.cos(angle)]])
-    #     points = np.dot(self.points, rot_mat)
-    #     self.points = []
-    #     for x in points:
-    #         tup = ((x[0, 0], x[0, 1]))
-    #         self.points.append(tup)
 
     def rotate(self, angle):
         # print "angle {}".format(angle)
@@ -107,9 +96,6 @@ class ScreenSaver():
                 if event.type == pygame.QUIT:  # If user clicked close
                     self.done = True  # Flag that we are done so we exit this loop
 
-            # All drawing code happens after the for loop and but
-            # inside the main while done==False loop.
-
             # Clear the screen and set the screen background
             self.screen.fill(self.WHITE)
 
@@ -150,9 +136,6 @@ class ScreenSaver():
                     if self.b == 0:
                         self.tilt_increase = True
 
-            # print a, b, x_pos, y_pos, up
-
-
             # Draw a rectangle outline
             for i in range(self.num_recs):
                 i = self.num_recs - i
@@ -163,18 +146,18 @@ class ScreenSaver():
                                ])
 
                 # rotate rectangle
+
                 # angle = ((np.sin(count * i * .1) + 1) / 2) * 360
                 # if angle > 270 and up:
                 #     angle = 0
                 # rect.rotate(angle)
-                points = rect.get_points()
-                # pygame.draw.rect(screen, BLACK, [(i * a / 5.) + x_pos,(i * b / 5.) + y_pos, i * 10, i * 10], 2)
-                pygame.draw.lines(self.screen, self.BLACK, False, points, 2)
-            # pygame.draw.lines(screen, BLACK, False, [(10, 10), (10, 110), (110, 110), (110, 10), (10, 10)], 2)
-            # Go ahead and update the screen with what we've drawn.
-            # This MUST happen after all the other drawing commands.
 
+                points = rect.get_points()
+                pygame.draw.lines(self.screen, self.BLACK, False, points, 2)
+
+            # update the screen with what we've drawn.
             pygame.display.flip()
+
 if __name__ == "__main__":
     ss = ScreenSaver()
     ss.run()
